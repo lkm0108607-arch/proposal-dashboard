@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<!-- 자동 새로고침 제거 — 탭 상태 유지 위해 수동 새로고침 또는 push 시 갱신 -->
+<meta http-equiv="refresh" content="5">
 <title>다리메이커 AI 운영조직 — 실시간 대시보드</title>
 <style>
   *{margin:0;padding:0;box-sizing:border-box}
@@ -505,8 +505,14 @@ function switchTab(name){
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
   document.getElementById('tab-'+name).classList.add('active');
-  event.target.classList.add('active');
+  document.querySelectorAll('.tab').forEach(t=>{if(t.textContent.includes(name==='log'?'로그':'초안'))t.classList.add('active')});
+  location.hash=name;
 }
+// 페이지 로드 시 hash로 탭 복원
+(function(){
+  var h=location.hash.replace('#','');
+  if(h==='draft') switchTab('draft');
+})();
 function tick(){
   var d=new Date('2026-03-19T22:00:00+09:00'),n=new Date(),x=d-n;
   if(x<=0){document.getElementById('rem').textContent='마감!';return}

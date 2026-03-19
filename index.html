@@ -40,6 +40,16 @@
   .talk.r{border-left:3px solid #2ed573;background:#1a251e;color:#b8f0cd}
   .talk.w{border-left:3px solid #ffa502;background:#25231a;color:#ffe0a0}
   .talk.g{border-left:3px solid #ffda79;background:#25241a;color:#fff3c0}
+  .tabs{display:flex;gap:4px;margin-bottom:0}
+  .tab{padding:10px 20px;background:#1a1f30;border:1px solid #2a2f42;border-bottom:none;border-radius:8px 8px 0 0;cursor:pointer;font-size:.85em;color:#888;font-weight:bold}
+  .tab.active{background:#141824;color:#4facfe;border-color:#4facfe;border-bottom:1px solid #141824}
+  .tab-content{display:none}
+  .tab-content.active{display:block}
+  .draft{white-space:pre-wrap;font-family:'SF Mono',monospace;font-size:.78em;line-height:1.7;color:#ccc;max-height:600px;overflow-y:auto;padding:4px}
+  .draft .slide-title{color:#4facfe;font-weight:bold;font-size:1.1em;margin-top:16px}
+  .draft .headline{color:#ffa502;font-weight:bold;font-size:1em}
+  .draft .src{color:#2ed573;font-size:.85em}
+  .draft-ver{color:#888;font-size:.75em;margin-bottom:8px}
 </style>
 </head>
 <body>
@@ -96,8 +106,15 @@
   </div>
 </div>
 
-<div class="card full">
-  <h2>에이전트 작업 로그 (최신순)</h2>
+<div class="card full" style="padding-bottom:0">
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab('log')">에이전트 작업 로그</div>
+    <div class="tab" onclick="switchTab('draft')">초안 보기 (v5)</div>
+  </div>
+</div>
+
+<div class="card full" style="border-top:none;border-radius:0 0 10px 10px;margin-top:-14px">
+  <div class="tab-content active" id="tab-log">
   <div class="log">
 
 <!-- === 로그: 최신이 위 === -->
@@ -319,9 +336,153 @@
 </div>
 
   </div>
+  </div>
+
+  <div class="tab-content" id="tab-draft">
+    <div class="draft-ver">v5 | 핵심제목 1문장 + 보완설명 2문장 + 도식화(출처) | 레드팀 검토 반영 중</div>
+    <div class="draft">
+<span class="slide-title">━━━ [슬라이드 1] 표지 ━━━</span>
+2026 관광 오픈이노베이션 사업계획서
+지역 관광 체험 콘텐츠의 상품화와 유통 혁신
+— 패밀리 워케이션 × 현대홈쇼핑 협업 —
+주식회사 다리메이커 (두런두런) | 대표이사 강호산
+
+<span class="slide-title">━━━ [슬라이드 2] 사업 아이템 개요 ━━━</span>
+<span class="headline">핵심제목: 숙박여행 동반유형 1위(52.4%)인 가족 관광에, 급증하는 체험형 수요(45%)를 결합한 상품을 살 수 있는 유통 채널은 없다.</span>
+
+보완 1: 가족/친지 동반은 숙박여행 동반유형 1위(52.4%)이며, 체험/액티비티 중심 여행 선호도는 2019년 28%→2023년 45%로 급증했지만, 홈쇼핑·이커머스에서 체험형 가족 관광을 구매할 수 있는 상품은 부재하다.
+보완 2: 다리메이커는 7개 지역에서 7,905시간 운영하며 검증한 가족형 관광 체험 콘텐츠를, 현대홈쇼핑의 커머스 채널을 통해 상품화한다.
+
+도식화: 3가지 구조적 GAP 인포그래픽 (체험관광 28%→45% / 가족관광 52.4% / 지역소멸 113곳)
+<span class="src">출처: 문화체육관광부(2023), 한국관광공사(2023), 한국고용정보원(2023)</span>
+
+<span class="slide-title">━━━ [슬라이드 3] 회사 소개 ━━━</span>
+<span class="headline">핵심제목: 3년 만에 매출 194% 성장, 만족도 98% — 7개 지역에서 검증된 가족형 관광 체험 플랫폼.</span>
+
+보완 1: 벤처기업·예비사회적기업·종합여행업 등록 보유, 국민대 교육연구소 공동 R&D 발도르프 기반 아이돌봄 프로그램을 7개 지역에서 운영.
+보완 2: 국민연금공단 등 6개 기관 반복구매 확정, 기관당 평균 연 0.4~0.6억 규모.
+
+도식화: 매출 성장 막대(0.3→1.08→2.3억) + 킬러넘버 카드(만족도98%/재이용97%/거래처40개/체류8,625h)
+<span class="src">출처: 자체 재무(2023~2025), 참여자 설문(2024.07~2025.10)</span>
+
+<span class="slide-title">━━━ [슬라이드 4] 수요기업 과제 이해 (평가 1-1) ━━━</span>
+<span class="headline">핵심제목: 현대홈쇼핑의 4대 과제를 다리메이커의 검증된 역량으로 1:1 대응한다.</span>
+
+보완 1: 현대홈쇼핑 매출 1.3조원, 여행 취급액 1,500~2,000억원, 4대 과제 제시.
+보완 2: 7개 지역 인프라, 7,905시간 데이터, 359일 영상 아카이브, B2B 복지 실적으로 전부 대응 가능.
+
+도식화: 과제-역량 매칭 다이어그램 (①체험콘텐츠→7지역 ②숏폼→359일영상 ③K-뷰티→힐링체험 ④추가→B2B복지)
+<span class="src">출처: 현대홈쇼핑 DART(2023), 한국여행업협회(2023), 자체 운영 데이터</span>
+
+<span class="slide-title">━━━ [슬라이드 5] 제안 솔루션 (평가 1-2) ━━━</span>
+<span class="headline">핵심제목: 3종 상품 × 3개 판매 채널로, 7개월간 200가족 판매·약 2억원 매출을 실증한다.</span>
+
+보완 1: 패밀리 워케이션(80~120만), 원데이 클래스(15~30만), 시즌 투어(50~80만) 3종.
+보완 2: 낙관 월 55가족(7개월 1.97억), 보수적 월 30가족(7개월 1.07억).
+
+도식화: 상품 3종 카드 + 매출 시뮬레이션 표
+<span class="src">출처: 자체 운영(1가정 120만/2박3일), 한국여행업협회(홈쇼핑 여행 1조~1.2조, 2023)</span>
+
+<span class="slide-title">━━━ [슬라이드 6] 기술적 우수성 (평가 2-1) ━━━</span>
+<span class="headline">핵심제목: 7,905시간 현장 데이터에서 만든 표준 운영 시스템이, 어떤 지역에서든 동일한 98% 만족도를 보장한다.</span>
+
+보완 1: L1-L2-L3 인력 체계 + 국민대 R&D 커리큘럼, 7개 지역 품질 일관성, 40명 로컬 양성.
+보완 2: AI 맞춤추천·콘텐츠 자동생성·만족도 예측 개발 중, 본 사업 기간 내 실증.
+
+도식화: 기술 피라미드(7지역→표준운영→데이터→AI) + AI 4개 영역 카드
+<span class="src">출처: 참여자 설문(만족도 98.9%), 국민대 R&D 계약(2024~), 통영 SW개발 등록(2025.07)</span>
+
+<span class="slide-title">━━━ [슬라이드 7] 기술 개발 현황 (평가 2-2) ━━━</span>
+<span class="headline">핵심제목: 상용화 완료된 7개 지역 서비스 위에, AI 기반 고도화를 단계적으로 구축하고 있다.</span>
+
+보완 1: 서비스·매뉴얼·콘텐츠·파트너십 모두 상용화-실증-학술검증 완료, 40개 거래처 116%↑.
+보완 2: AI는 2026 상반기 MVP 목표, 사업 기간 내 맞춤추천·콘텐츠생성 실증.
+
+도식화: 기술 현황 막대(100%~20%) + AI 간트차트(5~11월)
+<span class="src">출처: 자체 개발 현황(2026.03), 통영 SW개발 등록(216-85-11851)</span>
+
+<span class="slide-title">━━━ [슬라이드 8] 수요기업 시너지 (평가 3-1) ━━━</span>
+<span class="headline">핵심제목: 다리메이커의 콘텐츠 개발력과 현대홈쇼핑의 유통력이 만나, 체험형 관광 커머스 상품화라는 새 시장을 연다.</span>
+
+보완 1: 다리메이커(콘텐츠·인력·영상) ↔ 현대홈쇼핑(채널·브랜드·결제) 상호 보완.
+보완 2: 라이브커머스(30~50가족/회), H.Point(100가족/월), K-뷰티(3,000억 시장) 3개 시나리오.
+
+도식화: 시너지 구조도 + 3대 시나리오 카드(매출 비중 50%/30%/20%)
+<span class="src">출처: 한국여행업협회(1조~1.2조, 2023), 한국보건산업진흥원(K-뷰티 3,000억, 2024), 베네피아</span>
+
+<span class="slide-title">━━━ [슬라이드 9] 협업 KPI 및 리스크 (평가 3-2) ━━━</span>
+<span class="headline">핵심제목: 7개 KPI를 기존 실적(만족도 98%, 재이용 97%)을 근거로 설정하고, 4대 리스크에 사전 대응한다.</span>
+
+보완 1: 상품 3종, 200가족, 16건 숏폼(50만뷰+), 만족도 95%+, 재구매 80%+ 등 7개 KPI 월별 추적.
+보완 2: 비수기 부진→시즌 차별화, 품질→L1L2L3, 콘텐츠→A/B테스트, 일정→월1회 협의.
+
+도식화: KPI 도넛 4개 + 리스크 매트릭스 2×2
+<span class="src">출처: 자체 실적(만족도 98%, 재이용 97%, 아이돌봄 98.9%)</span>
+
+<span class="slide-title">━━━ [슬라이드 10] 자금 운용 및 일정 (평가 3-3) ━━━</span>
+<span class="headline">핵심제목: 5,000만원을 6개 비목에 활동-KPI 1:1 매칭으로 집행하며, 7개월 마일스톤으로 관리한다.</span>
+
+보완 1: 외주30%·인건비20%·시장조사16%·광고14%·재료10%·임차10%, 자부담 500만 별도.
+보완 2: 5월 기획→7월 출시→8월 성수기→11월 보고, 각 비목이 KPI에 직접 연결.
+
+도식화: 예산 파이차트 + 활동-KPI 매칭 + 7개월 간트
+<span class="src">출처: 공고문 별임2 「사업화 자금 사용기준」</span>
+
+<span class="slide-title">━━━ [슬라이드 11] 관광수요 창출 (평가 4-1) ━━━</span>
+<span class="headline">핵심제목: 200가족이 지역에서 소비하는 2.4억원과, 365일 중 359일 체류 실적이 비수기 지역 관광의 새로운 수요를 만든다.</span>
+
+보완 1: 1가정 120만/2박3일 × 200가족 = 2.4억 지역 경제, 1회 7개 로컬 기업 협업.
+보완 2: 현대홈쇼핑 채널로 일반 가족 소비자 유입, 원스톱 결제+아이돌봄으로 편의 개선.
+
+도식화: 지역 경제 숫자 인포그래픽(7지역/200가족/2.4억/40명) + 편의 Before/After
+<span class="src">출처: 자체 운영(8,625시간), 참여자 설문(98%/99%), 행정안전부(인구감소 89곳, 2023)</span>
+
+<span class="slide-title">━━━ [슬라이드 12] 관광 AX 및 혁신 (평가 4-2) ━━━</span>
+<span class="headline">핵심제목: 체험형 관광 × AI × 커머스의 결합 모델을 실증하여, 관광 산업 AX의 구체적 사례를 만든다.</span>
+
+보완 1: AI 맞춤추천(전환율↑) + AI 콘텐츠생성(80%↓시간) + AI 만족도예측(불만방지) 3영역 실증.
+보완 2: 인구감소 89곳 활성화 모델로 확산 가능, 체험형 관광 도입 지역 방문객 15~30%↑.
+
+도식화: AX Before/After 비교표 + 지역 생태계 기여 아이콘
+<span class="src">출처: 한국관광공사(방문객 15~30%↑, 2023), 행정안전부(2023), 자체 데이터</span>
+
+<span class="slide-title">━━━ [슬라이드 13] Scale-up 전략 (평가 5-1) ━━━</span>
+<span class="headline">핵심제목: B2G/B2B에서 검증된 반복구매 모델에 현대홈쇼핑 B2C를 더해, 3면 매출 구조를 완성한다.</span>
+
+보완 1: 매출 0.3→2.3억(194%↑), 6개 기관 반복구매 확정, B2C 추가로 15억 목표 가속.
+보완 2: PoC(200가족) → 확장(1,000) → 고도화(5,000+해외), 온라인 여행 월 2.2조 시장 선점.
+
+도식화: 매출 성장 그래프 + 채널 확장(2면→3면) + 3단계 로드맵
+<span class="src">출처: 자체 재무(2023~2025), 통계청 온라인쇼핑동향(2024, 월 2.2조), SOM 4,100억</span>
+
+<span class="slide-title">━━━ [슬라이드 14] 팀 전문성 (평가 5-2) ━━━</span>
+<span class="headline">핵심제목: 교육학·재무·콘텐츠·영업 4인 + 발도르프 20년 자문이, 3년간 30회 피벗으로 검증한 실행력을 가진 팀이다.</span>
+
+보완 1: 강호산(교육학), 이광민(20+사업설계), 박금주(심리상담1급), 나수연(B2B), 이현주(발도르프20년).
+보완 2: 한국관광공사·남해군(400평쇼룸)·국민대R&D + 6개 기관 반복구매 = 실행력 증거.
+
+도식화: 팀 조직도 + 파트너 허브&스포크 네트워크
+<span class="src">출처: 다리메이커 기업 프로필(2026.03), 국민대 R&D 계약, 6개 기관 구매 확정</span>
+
+<span class="slide-title">━━━ [슬라이드 15] 요약 ━━━</span>
+<span class="headline">핵심제목: 검증된 콘텐츠 × 검증된 유통 = 지역 관광 체험 상품화의 첫 번째 성공 사례를 만든다.</span>
+
+보완 1: 만족도 98%, 매출 194%↑, 8,625시간 로컬 체류 + 현대홈쇼핑 1.3조 = 3종 상품·200가족·2.4억 실증.
+보완 2: 체험형 관광 커머스 상품화 + AI 관광 AX = 새로운 유통 모델 제시.
+
+도식화: 핵심 성과 4개(3종/200가족/16건/2.4억) + 클로징 메시지
+<span class="src">출처: 자체 운영 실적 종합(2023~2025)</span>
+    </div>
+  </div>
 </div>
 
 <script>
+function switchTab(name){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+  event.target.classList.add('active');
+}
 function tick(){
   var d=new Date('2026-03-19T22:00:00+09:00'),n=new Date(),x=d-n;
   if(x<=0){document.getElementById('rem').textContent='마감!';return}

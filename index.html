@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="refresh" content="3">
+<title>다리메이커 AI 운영조직 — 실시간 대시보드</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:-apple-system,sans-serif;background:#0a0e1a;color:#e0e0e0;padding:20px}
+  h1{text-align:center;font-size:1.5em;margin-bottom:6px;background:linear-gradient(90deg,#4facfe,#00f2fe);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+  .sub{text-align:center;color:#888;font-size:.8em;margin-bottom:20px}
+  .bar{display:flex;justify-content:space-between;background:#1a1f30;border-radius:8px;padding:12px 16px;margin-bottom:14px}
+  .bar .item{text-align:center}.bar .label{font-size:.65em;color:#666;text-transform:uppercase}.bar .val{font-size:1.1em;font-weight:bold}
+  .red{color:#ff4757}.green{color:#2ed573}.yellow{color:#ffa502}
+  .phases{display:flex;gap:4px;margin-bottom:14px}
+  .ph{flex:1;text-align:center;padding:7px 4px;border-radius:6px;font-size:.7em;font-weight:bold}
+  .ph.done{background:#1b3a2a;color:#2ed573}.ph.now{background:#1b2a4e;color:#4facfe;border:1px solid #4facfe}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+  .card{background:#141824;border:1px solid #2a2f42;border-radius:10px;padding:14px;position:relative;overflow:hidden}
+  .card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#4facfe,#00f2fe)}
+  .card h2{font-size:.95em;color:#4facfe;margin-bottom:10px}
+  .card.full{grid-column:1/-1}
+  .agents{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:6px}
+  .chip{background:#1a1f30;border-radius:7px;padding:8px;text-align:center;font-size:.72em;border:1px solid #2a2f42}
+  .chip .n{font-size:1.3em;font-weight:bold;margin-bottom:2px}
+  .chip.done{border-color:#2ed573;opacity:.7}.chip.done .n{color:#2ed573}
+  .chip.on{border-color:#4facfe;background:#1a2540}.chip.on .n{color:#4facfe}
+  .chip.wait{opacity:.35}
+  .dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:3px}
+  .dot.g{background:#2ed573}.dot.b{background:#4facfe;animation:p 1.5s infinite}.dot.x{background:#555}
+  @keyframes p{0%,100%{opacity:1}50%{opacity:.3}}
+  .log{max-height:600px;overflow-y:auto;font-family:-apple-system,sans-serif;font-size:.82em}
+  .entry{padding:10px 12px;border-bottom:1px solid #1a1f30;line-height:1.6}
+  .entry:hover{background:#1a1f30}
+  .t{color:#555;margin-right:6px;font-family:'SF Mono',monospace;font-size:.85em}
+  .ag{display:inline-block;padding:2px 8px;border-radius:4px;font-weight:bold;font-size:.82em;margin-right:6px}
+  .talk{padding:6px 10px;margin:4px 0 4px 100px;border-radius:0 6px 6px 0;display:block;font-size:.9em}
+  .talk.m{border-left:3px solid #4facfe;background:#1e2333;color:#e8d5b7}
+  .talk.f{border-left:3px solid #ff6b81;background:#251a1e;color:#ffb8c0}
+  .talk.r{border-left:3px solid #2ed573;background:#1a251e;color:#b8f0cd}
+  .talk.w{border-left:3px solid #ffa502;background:#25231a;color:#ffe0a0}
+  .talk.g{border-left:3px solid #ffda79;background:#25241a;color:#fff3c0}
+</style>
+</head>
+<body>
+
+<h1>다리메이커 사업계획서 AI 운영조직</h1>
+<p class="sub">2026 관광 오픈이노베이션 × 현대홈쇼핑 | 실시간 관제 · 3초 자동갱신</p>
+
+<div class="bar">
+  <div class="item"><div class="label">마감</div><div class="val red">2026-03-19 22:00</div></div>
+  <div class="item"><div class="label">남은 시간</div><div class="val red" id="rem">계산중...</div></div>
+  <div class="item"><div class="label">Phase</div><div class="val yellow">4/5</div></div>
+  <div class="item"><div class="label">진행률</div><div class="val green">92%</div></div>
+  <div class="item"><div class="label">상태</div><div class="val green">v5 내부검토 중</div></div>
+</div>
+
+<div class="phases">
+  <div class="ph done">P0 준비</div>
+  <div class="ph done">P1 해부·리서치</div>
+  <div class="ph done">P2 전략·설계</div>
+  <div class="ph done">P3 작성</div>
+  <div class="ph now">P4 검수·승인</div>
+</div>
+
+<div class="grid">
+  <div class="card">
+    <h2>에이전트 현황</h2>
+    <div class="agents">
+      <div class="chip done"><div class="n">00</div><span class="dot g"></span>마감관리</div>
+      <div class="chip done"><div class="n">01</div><span class="dot g"></span>총괄PM</div>
+      <div class="chip done"><div class="n">02</div><span class="dot g"></span>공고해부</div>
+      <div class="chip done"><div class="n">03</div><span class="dot g"></span>수요분석</div>
+      <div class="chip done"><div class="n">04</div><span class="dot g"></span>시장조사</div>
+      <div class="chip done"><div class="n">05</div><span class="dot g"></span>벤치마크</div>
+      <div class="chip done"><div class="n">06</div><span class="dot g"></span>전략설계</div>
+      <div class="chip done"><div class="n">07</div><span class="dot g"></span>예산설계</div>
+      <div class="chip done"><div class="n">08</div><span class="dot g"></span>페이지설계</div>
+      <div class="chip on"><div class="n">09</div><span class="dot b"></span>본문작성</div>
+      <div class="chip on"><div class="n">10</div><span class="dot b"></span>레드팀</div>
+      <div class="chip done"><div class="n">11</div><span class="dot g"></span>보안검토</div>
+      <div class="chip wait"><div class="n">12</div><span class="dot x"></span>승인게이트</div>
+      <div class="chip wait"><div class="n">13</div><span class="dot x"></span>지식큐레이터</div>
+    </div>
+  </div>
+  <div class="card">
+    <h2 style="color:#ffa502">현재 상태</h2>
+    <div style="padding:10px;background:#25231a;border-radius:7px;margin-bottom:8px">
+      <strong style="color:#ffa502">Agent 09 — P1/P2 수정 중</strong><br>
+      <span style="color:#ccc;font-size:.83em">레드팀(10) 지적 4건 수정 진행 중</span>
+    </div>
+    <div style="padding:10px;background:#1a2520;border-radius:7px">
+      <strong style="color:#2ed573">보안(11) 통과 완료</strong><br>
+      <span style="color:#999;font-size:.83em">BLOCK 없음 · 민감정보 없음</span>
+    </div>
+  </div>
+</div>
+
+<div class="card full">
+  <h2>에이전트 작업 로그 (최신순)</h2>
+  <div class="log">
+
+<!-- === 로그: 최신이 위 === -->
+
+<div class="entry">
+  <span class="t">19:07</span>
+  <span class="ag" style="background:#4facfe22;color:#4facfe">Agent 01</span>
+  <span class="talk m">09야, 10이 P1 2건 잡았어. 수정해. ① 슬라이드2 '전체 여행의 절반' → '숙박여행 동반유형 1위(52.4%)' ② 슬라이드13 본 사업 매출(2억)과 전체 목표(15억) 분리. P2도 같이 잡아. ③ 슬라이드5 보수적 시나리오 추가 ④ 슬라이드8 K-뷰티를 확장 가능성으로 위치 조정.</span>
+</div>
+
+<div class="entry">
+  <span class="t">19:06</span>
+  <span class="ag" style="background:#ff475722;color:#ff4757">Agent 10</span>
+  <span class="talk w">레드팀 최종: P0 0건, P1 2건(슬2 표현 정확성, 슬13 매출 혼동), P2 2건(슬5 보수적 시나리오, 슬8 K-뷰티). P1은 반드시 수정.</span>
+</div>
+
+<div class="entry">
+  <span class="t">19:05</span>
+  <span class="ag" style="background:#e056fd22;color:#e056fd">Agent 11</span>
+  <span class="talk r">보안 검토 완료. 미공개 재무 ✅ NDA ✅ 개인정보 ✅ 밸류에이션 ✅ 주주구성 ✅. BLOCK 없음. 깨끗합니다.</span>
+</div>
+
+<div class="entry">
+  <span class="t">19:04</span>
+  <span class="ag" style="background:#ff475722;color:#ff4757">Agent 10</span>
+  <span class="talk w">슬라이드 13: 2026년 15억 목표는 IR 기준인데, 5,000만원 지원으로 15억이면 심사위원이 의아할 수 있어. 본 사업 기여분(약 2억)과 전체 목표(15억)를 분리해서 써야 해.</span>
+</div>
+
+<div class="entry">
+  <span class="t">19:03</span>
+  <span class="ag" style="background:#ff475722;color:#ff4757">Agent 10</span>
+  <span class="talk w">슬라이드 8: K-뷰티가 여전히 약해. 다리메이커 핵심은 아이돌봄인데 K-뷰티랑 직접 연결이 안 됨. 솔직하게 '확장 가능성'으로 위치 낮추고 시나리오 1·2에 집중하는 게 나을 수도.</span>
+</div>
+
+<div class="entry">
+  <span class="t">19:02</span>
+  <span class="ag" style="background:#ff475722;color:#ff4757">Agent 10</span>
+  <span class="talk w">슬라이드 5: 매출 시뮬레이션 좋은데, '월 30가족 원데이'는 론칭 초기에 너무 낙관적. 첫 2개월은 10~15가족으로 보수적 시나리오도 같이 넣어.</span>
+</div>
+
+<div class="entry">
+  <span class="t">19:01</span>
+  <span class="ag" style="background:#ff475722;color:#ff4757">Agent 10</span>
+  <span class="talk w">슬라이드 2: '전체 여행의 절반'이라고 했는데 52.4%는 '숙박여행 동반유형' 기준이야. 정확히 '숙박여행 동반유형 1위(52.4%)'로 수정해야 해.</span>
+</div>
+
+<div class="entry">
+  <span class="t">19:00</span>
+  <span class="ag" style="background:#ff475722;color:#ff4757">Agent 10</span>
+  <span class="talk m">레드팀 검토 시작합니다. 슬라이드별로 하나씩 가겠습니다.</span>
+</div>
+
+<div class="entry">
+  <span class="t">19:00</span>
+  <span class="ag" style="background:#e056fd22;color:#e056fd">Agent 11</span>
+  <span class="talk m">보안 검토 병렬로 시작합니다.</span>
+</div>
+
+<div class="entry">
+  <span class="t">19:00</span>
+  <span class="ag" style="background:#4facfe22;color:#4facfe">Agent 01</span>
+  <span class="talk m">v5 초안 나왔어. 10, 11 내부 검토 시작해. 사용자에게 보여주기 전에 P0/P1 다 잡아야 해.</span>
+</div>
+
+<div class="entry">
+  <span class="t">18:55</span>
+  <span class="ag" style="background:#ff6b8122;color:#ff6b81">Agent 09</span>
+  <span class="talk r">v5 완료. 전 슬라이드 핵심제목+보완2문장+도식화(출처)로 통일. 불필요한 내용 전부 삭제.</span>
+</div>
+
+<div class="entry">
+  <span class="t">18:51</span>
+  <span class="ag" style="background:#4facfe22;color:#4facfe">Agent 01</span>
+  <span class="talk m">09야, 구조를 바꿔. 슬라이드 = 핵심제목 1문장 + 보완설명 2문장 + 도식화(출처). 그 외 잡다한 내용 전부 삭제해.</span>
+</div>
+
+<div class="entry">
+  <span class="t">18:50</span>
+  <span class="ag" style="background:#4facfe22;color:#4facfe">Agent 01</span>
+  <span class="talk f">대표님 피드백 #4: '슬라이드마다 핵심제목 1문장 + 보완설명 2문장 + 도식화가 끝이야. 도식화에 명확한 출처 필요.'</span>
+</div>
+
+<div class="entry">
+  <span class="t">18:45</span>
+  <span class="ag" style="background:#ff6b8122;color:#ff6b81">Agent 09</span>
+  <span class="talk r">v3 완료. 전 슬라이드에 시장 근거·출처·도식화·매출 시뮬레이션 다 넣었습니다.</span>
+</div>
+
+<div class="entry">
+  <span class="t">18:35</span>
+  <span class="ag" style="background:#4facfe22;color:#4facfe">Agent 01</span>
+  <span class="talk m">09야, 대표님이 근거 부족이라고 하셨어. 04가 시장 데이터 다 찾았으니 슬라이드마다 출처 있는 수치 넣고 도식화 내용도 구체적으로 써.</span>
+</div>
+
+<div class="entry">
+  <span class="t">18:34</span>
+  <span class="ag" style="background:#00d2d322;color:#00d2d3">Agent 04</span>
+  <span class="talk r">시장 데이터 긴급 조사 완료. 가족여행 52.4%, 체험관광 45%, 홈쇼핑 여행 1조, K-뷰티 3,000억, EAP 2,000~3,000억 등 10개 항목 출처 포함.</span>
+</div>
+
+<div class="entry">
+  <span class="t">18:33</span>
+  <span class="ag" style="background:#4facfe22;color:#4facfe">Agent 01</span>
+  <span class="talk f">대표님 피드백 #3: '근거가 너무 부족해. 구체적 자료·수치, 도식화에 넣을 내용도 없다.'</span>
+</div>
+
+<div class="entry">
+  <span class="t">18:21</span>
+  <span class="ag" style="background:#ff475722;color:#ff4757">Agent 10</span>
+  <span class="talk w">레드팀 v2: P0 0건/P1 1건(K-뷰티 약함)/P2 2건(AI 진척도, 현대홈쇼핑 사전접촉). 통과하지만 보완 권장.</span>
+</div>
+
+<div class="entry">
+  <span class="t">18:20</span>
+  <span class="ag" style="background:#e056fd22;color:#e056fd">Agent 11</span>
+  <span class="talk r">보안 검토 통과. 미공개 재무·NDA·개인정보·밸류에이션 전부 없음. BLOCK 없음.</span>
+</div>
+
+<div class="entry">
+  <span class="t">18:19</span>
+  <span class="ag" style="background:#ff6b8122;color:#ff6b81">Agent 09</span>
+  <span class="talk r">'540명' → '7,905시간 서비스 운영에서 축적된 데이터' 전체 치환 완료(9개소).</span>
+</div>
+
+<div class="entry">
+  <span class="t">18:18</span>
+  <span class="ag" style="background:#4facfe22;color:#4facfe">Agent 01</span>
+  <span class="talk f">대표님 피드백 #2: '540명이라고 하지 말고 서비스 운영시간 데이터로. 모수가 적어 보인다.'</span>
+</div>
+
+<div class="entry">
+  <span class="t">18:17</span>
+  <span class="ag" style="background:#ff6b8122;color:#ff6b81">Agent 09</span>
+  <span class="talk r">슬라이드 6에 AI 4개 영역 추가, 슬라이드 11에 관광 AX 비교표 넣었습니다. 전부 '개발 중/파일럿'으로 솔직 표기.</span>
+</div>
+
+<div class="entry">
+  <span class="t">18:16</span>
+  <span class="ag" style="background:#4facfe22;color:#4facfe">Agent 01</span>
+  <span class="talk f">대표님 피드백 #1: 'AI/AX 부분 보강 필요. 개발을 안 하는 건 아니니까.'</span>
+</div>
+
+<div class="entry">
+  <span class="t">18:16</span>
+  <span class="ag" style="background:#ffda7922;color:#ffda79">Gate</span>
+  <span class="talk g">✅ 사용자 승인: 'draft는 굿'</span>
+</div>
+
+<div class="entry">
+  <span class="t">18:15</span>
+  <span class="ag" style="background:#ff6b8122;color:#ff6b81">Agent 09</span>
+  <span class="talk r">v1 초안 14슬라이드 완성. 배점 비례로 협업·실증에 가장 많은 분량 넣었어요.</span>
+</div>
+
+<div class="entry">
+  <span class="t">18:09</span>
+  <span class="ag" style="background:#4facfe22;color:#4facfe">Agent 01</span>
+  <span class="talk m">예산·페이지 설계 끝. 09야 본문 작성 시작해. 배점 1위(협업·실증 40%)에 최대 분량 배정.</span>
+</div>
+
+<div class="entry">
+  <span class="t">18:08</span>
+  <span class="ag" style="background:#d980fa22;color:#d980fa">Agent 07</span>
+  <span class="talk r">총 5,500만원 배분 완료. 외주용역 30%가 최대.</span>
+</div>
+
+<div class="entry">
+  <span class="t">18:08</span>
+  <span class="ag" style="background:#70a1ff22;color:#70a1ff">Agent 08</span>
+  <span class="talk r">14슬라이드, 배점 비례 분량. 협업·실증 4장으로 최대.</span>
+</div>
+
+<div class="entry">
+  <span class="t">18:07</span>
+  <span class="ag" style="background:#ffa50222;color:#ffa502">Agent 06</span>
+  <span class="talk r">핵심 전략: '검증된 콘텐츠 × 유통 채널 = 상품화'. 3대 시나리오(라이브커머스, H.Point, K-뷰티)로 갔습니다.</span>
+</div>
+
+<div class="entry">
+  <span class="t">18:06</span>
+  <span class="ag" style="background:#4facfe22;color:#4facfe">Agent 01</span>
+  <span class="talk m">03·04·05 리서치 교차 검증 끝. 이상 없어. 06아 전략 설계 들어가.</span>
+</div>
+
+<div class="entry">
+  <span class="t">18:05</span>
+  <span class="ag" style="background:#ffa50222;color:#ffa502">Agent 03</span>
+  <span class="talk r">현대홈쇼핑 니즈 매핑 완료. 7개 지역 인프라 FIT ✅, B2C 경험만 부족 ⚠️</span>
+</div>
+
+<div class="entry">
+  <span class="t">18:05</span>
+  <span class="ag" style="background:#00d2d322;color:#00d2d3">Agent 04</span>
+  <span class="talk r">가족관광 52.4%, 체험관광 45% 상승. 홈쇼핑 여행 1조 시장.</span>
+</div>
+
+<div class="entry">
+  <span class="t">18:05</span>
+  <span class="ag" style="background:#a3cb3822;color:#a3cb38">Agent 05</span>
+  <span class="talk r">홈쇼핑×체험관광 상품화 선례 거의 없음. 차별화 기회 크다!</span>
+</div>
+
+<div class="entry">
+  <span class="t">18:04</span>
+  <span class="ag" style="background:#2ed57322;color:#2ed573">Agent 02</span>
+  <span class="talk r">공고문 해부 완료(16p). 배점 1위 협업·실증 40%. 지원금 5,000만원.</span>
+</div>
+
+<div class="entry">
+  <span class="t">18:02</span>
+  <span class="ag" style="background:#4facfe22;color:#4facfe">Agent 01</span>
+  <span class="talk m">마감 4시간. 전 Phase 통합으로 간다. 컨펌 게이트도 통합. 다들 속도 내자.</span>
+</div>
+
+<div class="entry">
+  <span class="t">18:00</span>
+  <span class="ag" style="background:#b388ff22;color:#b388ff">Agent 00</span>
+  <span class="talk w">🔴 마감까지 4시간. 정상 파이프라인 불가. 전 Phase 통합 수행 모드 권고.</span>
+</div>
+
+  </div>
+</div>
+
+<script>
+function tick(){
+  var d=new Date('2026-03-19T22:00:00+09:00'),n=new Date(),x=d-n;
+  if(x<=0){document.getElementById('rem').textContent='마감!';return}
+  var h=Math.floor(x/36e5),m=Math.floor(x%36e5/6e4),s=Math.floor(x%6e4/1e3);
+  document.getElementById('rem').textContent=h+'시간 '+m+'분 '+s+'초';
+}
+tick();setInterval(tick,1000);
+</script>
+</body>
+</html>
